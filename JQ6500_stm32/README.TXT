@@ -1,66 +1,49 @@
-ÊµÑéÆ÷²Ä:
-	ÕýµãÔ­×Ó¾«Ó¢STM32F103¿ª·¢°å
-	
-ÊµÑéÄ¿µÄ:
-	Ñ§Ï°´®¿ÚµÄÊ¹ÓÃ(½ÓÊÕÓë·¢ËÍ)
-	
-Ó²¼þ×ÊÔ´:
-	1,DS0(Á¬½ÓÔÚPB5)  
-	2,´®¿Ú1(²¨ÌØÂÊ:115200,PA9/PA10Á¬½ÓÔÚ°åÔØUSB×ª´®¿ÚÐ¾Æ¬CH340ÉÏÃæ)
-	
-ÊµÑéÏÖÏó:
-	±¾ÊµÑé,STM32Í¨¹ý´®¿Ú1ºÍÉÏÎ»»ú¶Ô»°£¬STM32ÔÚÊÕµ½ÉÏÎ»»ú·¢¹ýÀ´µÄ×Ö·û´®(ÒÔ»Ø³µ»»
-	ÐÐ½áÊø)ºó£¬	Ô­Ô­±¾±¾µÄ·µ»Ø¸øÉÏÎ»»ú¡£ÏÂÔØºó£¬DS0ÉÁË¸£¬ÌáÊ¾³ÌÐòÔÚÔËÐÐ£¬Í¬Ê±Ã¿
-	¸ôÒ»¶¨Ê±¼ä£¬Í¨¹ý´®¿Ú1Êä³öÒ»¶ÎÐÅÏ¢µ½µçÄÔ¡£ 
-	
-×¢ÒâÊÂÏî:
-	1,µçÄÔ¶Ë´®¿Úµ÷ÊÔÖúÊÖ²¨ÌØÂÊ±ØÐëÊÇ115200.
-	2,ÇëÊ¹ÓÃXCOM/SSCOM´®¿Úµ÷ÊÔÖúÊÖ,ÆäËû´®¿ÚÖúÊÖ¿ÉÄÜ¿ØÖÆDTR/RTSµ¼ÖÂMCU¸´Î»/³ÌÐò²»ÔËÐÐ
-	3,´®¿ÚÊäÈë×Ö·û´®ÒÔ»Ø³µ»»ÐÐ½áÊø.
-	4,ÇëÓÃUSBÏßÁ¬½ÓÔÚUSB_232,ÕÒµ½USB×ª´®¿Úºó²âÊÔ±¾Àý³Ì.
-	5,P3µÄPA9/PA10±ØÐëÍ¨¹ýÌøÏßÃ±Á¬½ÓÔÚRXD/TXDÉÏ.
+/**
+ * **********************************************************************
+ * @file Jq6500.c
+ * @author æ—ºè´¢ä¹Ÿçˆ±IOT
+ * @version V1.0
+ * @date 2018.12.26
+ * @brief jq6500è¯­éŸ³æ¨¡å— é©±åŠ¨å‡½æ•°æ–‡ä»¶.
+ *
+ * **********************************************************************
+ * @note
+ * 2019.2.20 ä¼˜åŒ–ä»£ç .
+ *
+ * **********************************************************************
+ */
+void JQ6500_Init(void);//jq6500 IOåˆå§‹åŒ–
+u8 voice_SumCheck(u8 *Str,u8 len);//8ä½æ ¡éªŒå’Œ
+void JQ6500_Next(void);//ä¸‹ä¸€æ›²
+void JQ6500_Prev(void);//ä¸Šä¸€æ›²
+void PlayNum(u8 nub);//jq6500è¯­éŸ³æ¨¡å—æŒ‡å®šæ›²ç›®æ’­æ”¾
+void VolAdd(void);//éŸ³é‡+
+void VolLess(void);//éŸ³é‡-
+void Volume(u8 nub);//æŒ‡å®šéŸ³é‡ éŸ³é‡èŒƒå›´0-30ï¼Œè®¾ç½®00åˆ°1E
+void PlayMode(u8 nub);//6ç§æ’­æ”¾æ¨¡å¼ 00Normal/01Pop/02Rock/03Jazz/04Classic/05Base
+void SelectDevice(u8 nub);//æŒ‡å®šè®¾å¤‡   0 U/1 TF/2 AUX/3 SLEEP/4 FLASH
+void Sleep(void);//æš‚åœæ’­æ”¾ è¿›å…¥ç¡çœ æ¨¡å¼
+void Peset(void);
+void Play(void);//æ’­æ”¾
+void Pause(void);//æš‚åœ
+void back_err(void);
+void check_state(void);
+void LoopMode(u8 nub);//5ç§å¾ªçŽ¯æ’­æ”¾æ¨¡å¼ 0 ALL/ 1 FOL/ 2 ONE/ 3 RAM/ 4 ONE_STOP
+void JQ6500_voice_nub(u8 temp);
+void JQ6500_voice_data(u32 data);//Jq6500æ•°å­—æ’­æŠ¥(ä½¿ç”¨å‰è¯·åœ¨.cæ–‡ä»¶ä¸­é˜…è¯»è¯¦æƒ…)
 
 
--------------------------------------------------------------------------------------------
-¡ôÆäËûÖØÒªÁ¬½Ó£º
-  ¿ª·¢°å¹âÅÌ×ÊÁÏÏÂÔØµØÖ·£¨ÊÓÆµ+ÎÄµµ+Ô´ÂëµÈ£©£ºhttp://www.openedv.com/posts/list/13912.htm
-  Ìí¼ÓÎ¢ÐÅ¹«ÖÚÆ½Ì¨·½·¨£ºhttp://www.openedv.com/posts/list/45157.htm
-  
-
-¡ôÓÑÇéÌáÊ¾£ºÈç¹ûÄúÏëÒÔºó¼°Ê±Ãâ·ÑµÄÊÕµ½ÕýµãÔ­×ÓËùÓÐ¿ª·¢°å×ÊÁÏ¸üÐÂÔö¼ÓÍ¨Öª£¬Çë¹Ø×¢Î¢ÐÅ¹«ÖÚÆ½Ì¨£º
-
- 2ÖÖÌí¼Ó·½·¨£º£¨¶¯¶¯ÊÖÌáÉýÄúµÄÑ§Ï°Ð§ÂÊ£¬¾ªÏ²²»¶ÏÅ¶£©
-£¨1£©´ò¿ªÎ¢ÐÅ->Ìí¼ÓÅóÓÑ->¹«ÖÚºÅ->ÊäÈë¡°ÕýµãÔ­×Ó¡±->µã»÷¹Ø×¢
-£¨2£©´ò¿ªÎ¢ÐÅ->Ìí¼ÓÅóÓÑ->ÊäÈë¡°alientek_stm32"->µã»÷¹Ø×¢
-
- ¾ßÌåÎ¢ÐÅÌí¼Ó·½·¨£¬Çë²Î¿¼Ìû×Ó£ºhttp://www.openedv.com/posts/list/45157.htm
-
- 
-
-			ÕýµãÔ­×Ó@ALIENTEK 
-			¹ãÖÝÊÐÐÇÒíµç×Ó¿Æ¼¼ÓÐÏÞ¹«Ë¾
-			µç»°£º020-38271790
-			´«Õæ£º020-36773971
-			¹ºÂò£ºhttp://eboard.taobao.com
-			¹«Ë¾ÍøÕ¾£ºwww.alientek.com
-			¼¼ÊõÂÛÌ³£ºwww.openedv.com
-
-
-
-
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+/******************************************/
+ä½¿ç”¨JQ6500_voice_data(u32 data)è¯·éµå¾ªä»¥ä¸‹æ–¹å¼
+//Jq6500æ•°å­—æ’­æŠ¥ 
+/*
+* ä½¿ç”¨æ­¤å‡½æ•°è¯­éŸ³å¿…é¡»æŒ‰ç…§ä»¥ä¸‹æ–¹å¼ çƒ§å½•
+* ç¬¬ä¸€æ¡è¯­éŸ³ 0
+* ç¬¬äºŒæ¡è¯­éŸ³ 1
+*  ........
+* ç¬¬åä¸€æ¡è¯­éŸ³ å
+* ç¬¬åäºŒæ¡è¯­éŸ³ ç‚¹
+* ç¬¬åä¸‰æ¡è¯­éŸ³ ç™¾
+* ç¬¬åå››æ¡è¯­éŸ³ åƒ
+* ç¬¬åäº”æ¡è¯­éŸ³ ä¸‡
+*/  
